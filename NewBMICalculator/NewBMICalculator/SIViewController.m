@@ -14,8 +14,8 @@
 @end
 
 // Boundaries for height slider
-const static float MIN_HEIGHT_VALUE[] = {50, 20};
-const static float MAX_HEIGHT_VALUE[] = {300, 120};
+const static float MIN_HEIGHT_VALUE[] = {0.5, 20};
+const static float MAX_HEIGHT_VALUE[] = {3, 120};
 // Boundaries for weight slider
 const static float MIN_WEIGHT_VALUE[] = {2, 4};
 const static float MAX_WEIGHT_VALUE[] = {300, 600};
@@ -32,14 +32,21 @@ const static float MAX_WEIGHT_VALUE[] = {300, 600};
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    // Defaulting the unit system to Metric
+    self.segmentUnitSystem.selectedSegmentIndex = UNIT_METRIC;
+    unit_system = self.segmentUnitSystem.selectedSegmentIndex;
     // Set up the height slider
     self.sliderHeight.minimumValue = MIN_HEIGHT_VALUE[unit_system];
     self.sliderHeight.maximumValue = MAX_HEIGHT_VALUE[unit_system];
     self.sliderHeight.value = 160;
+    flHeight = self.sliderHeight.value;
     // Set up the weight slider
     self.sliderWeight.minimumValue = MIN_WEIGHT_VALUE[unit_system];
     self.sliderWeight.maximumValue = MAX_WEIGHT_VALUE[unit_system];
     self.sliderWeight.value = 50;
+    flWeight = self.sliderWeight.value;
+    // Init BMI
+    [self updateBMI];
 }
 
 - (void)didReceiveMemoryWarning
@@ -50,7 +57,7 @@ const static float MAX_WEIGHT_VALUE[] = {300, 600};
 
 - (IBAction)unitSystemChanged:(id)sender
 {
-    //self.segmentUnitSystem.selectedSegmentIndex
+    unit_system = self.segmentUnitSystem.selectedSegmentIndex;
 }
 
 - (IBAction)heightChanged:(id)sender
@@ -71,11 +78,12 @@ const static float MAX_WEIGHT_VALUE[] = {300, 600};
 
 - (void)updateBMI
 {
-    flBMI = [SIViewController calculateBMI:flHeight :flWeight];
+    flBMI = [SIViewController calculateBMI :unit_system :flHeight :flWeight];
+    self.labelBMI.text = [NSString stringWithFormat:@"BMI: %.2f", flBMI];
     NSLog(@"flBMI = %.2f", flBMI);
 }
 
-+ (float)calculateBMI :(float)flHeight :(float)flWeight
++ (float)calculateBMI :(enum unit_system_t)unit_system :(float)flHeight :(float)flWeight
 {
     /*
      English BMI Formula
@@ -85,6 +93,21 @@ const static float MAX_WEIGHT_VALUE[] = {300, 600};
      */
     
     float flBMI = 0;
+    
+    switch (unit_system)
+    {
+        case UNIT_METRIC:
+            flBMI = flWeight / (flHeight * flHeight);
+            break;
+            
+        case UNIT_BRITISH:
+            flBMI = 703 * flWeight / (flHeight * flHeight);
+            break;
+            
+        default:
+            break;
+    }
+    
     flBMI = round_to_n_decimals(flHeight*flWeight, 2);
     return flBMI;
 }
