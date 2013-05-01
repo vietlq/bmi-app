@@ -38,7 +38,7 @@ const static float MAX_WEIGHT_VALUE[] = {300, 600};
     // Set up the height slider
     self.sliderHeight.minimumValue = MIN_HEIGHT_VALUE[unit_system];
     self.sliderHeight.maximumValue = MAX_HEIGHT_VALUE[unit_system];
-    self.sliderHeight.value = 160;
+    self.sliderHeight.value = 1.6;
     flHeight = self.sliderHeight.value;
     // Set up the weight slider
     self.sliderWeight.minimumValue = MIN_WEIGHT_VALUE[unit_system];
@@ -78,6 +78,7 @@ const static float MAX_WEIGHT_VALUE[] = {300, 600};
 
 - (void)updateBMI
 {
+    NSLog(@"unit_system = %d", unit_system);
     flBMI = [SIViewController calculateBMI :unit_system :flHeight :flWeight];
     self.labelBMI.text = [NSString stringWithFormat:@"BMI: %.2f", flBMI];
     NSLog(@"flBMI = %.2f", flBMI);
@@ -108,7 +109,7 @@ const static float MAX_WEIGHT_VALUE[] = {300, 600};
             break;
     }
     
-    flBMI = round_to_n_decimals(flHeight*flWeight, 2);
+    flBMI = round_to_n_decimals(flBMI, 2);
     return flBMI;
 }
 
