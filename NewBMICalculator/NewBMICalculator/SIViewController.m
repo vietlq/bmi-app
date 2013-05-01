@@ -19,6 +19,13 @@ const static float MAX_HEIGHT_VALUE[] = {3, 120};
 // Boundaries for weight slider
 const static float MIN_WEIGHT_VALUE[] = {2, 4};
 const static float MAX_WEIGHT_VALUE[] = {300, 600};
+// Strings
+const static char* UNIT_SYSTEMS_LABEL[] = {
+    "Unit System: m & kg", "Unit System: in & lb"
+};
+const static char* UNIT_HEIGHT_LABEL[] = {"m", "in"};
+
+const static char* UNIT_WEIGHT_LABEL[] = {"kg", "lb"};
 
 @implementation SIViewController
 {
@@ -35,12 +42,14 @@ const static float MAX_WEIGHT_VALUE[] = {300, 600};
     // Defaulting the unit system to Metric
     self.segmentUnitSystem.selectedSegmentIndex = UNIT_METRIC;
     unit_system = self.segmentUnitSystem.selectedSegmentIndex;
+    self.labelUnitSystem.text = [NSString stringWithFormat:@"%s", UNIT_SYSTEMS_LABEL[unit_system]];
     
     // Set up the height slider
     self.sliderHeight.minimumValue = MIN_HEIGHT_VALUE[unit_system];
     self.sliderHeight.maximumValue = MAX_HEIGHT_VALUE[unit_system];
     self.sliderHeight.value = 1.6;
     flHeight = self.sliderHeight.value;
+    NSLog(@"self.sliderHeight.value = %.6f", self.sliderHeight.value);
     
     // Set up the weight slider
     self.sliderWeight.minimumValue = MIN_WEIGHT_VALUE[unit_system];
@@ -62,17 +71,20 @@ const static float MAX_WEIGHT_VALUE[] = {300, 600};
 {
     const enum unit_system_t old_unit_system = unit_system;
     unit_system = self.segmentUnitSystem.selectedSegmentIndex;
+    self.labelUnitSystem.text = [NSString stringWithFormat:@"%s", UNIT_SYSTEMS_LABEL[unit_system]];
     
     // Set up the height slider
+    const float old_height = self.sliderHeight.value;
     self.sliderHeight.minimumValue = MIN_HEIGHT_VALUE[unit_system];
     self.sliderHeight.maximumValue = MAX_HEIGHT_VALUE[unit_system];
-    self.sliderHeight.value = self.sliderHeight.value*HEIGHT_RATIO_TABLE[unit_system]/HEIGHT_RATIO_TABLE[old_unit_system];
+    self.sliderHeight.value = old_height*HEIGHT_RATIO_TABLE[unit_system]/HEIGHT_RATIO_TABLE[old_unit_system];
     [self heightChanged:self];
     
     // Set up the weight slider
+    const float old_weight = self.sliderWeight.value;
     self.sliderWeight.minimumValue = MIN_WEIGHT_VALUE[unit_system];
     self.sliderWeight.maximumValue = MAX_WEIGHT_VALUE[unit_system];
-    self.sliderWeight.value = self.sliderWeight.value*WEIGHT_RATIO_TABLE[unit_system]/WEIGHT_RATIO_TABLE[old_unit_system];
+    self.sliderWeight.value = old_weight*WEIGHT_RATIO_TABLE[unit_system]/WEIGHT_RATIO_TABLE[old_unit_system];
     [self weightChanged:self];
     
     // Init BMI
@@ -82,23 +94,21 @@ const static float MAX_WEIGHT_VALUE[] = {300, 600};
 - (IBAction)heightChanged:(id)sender
 {
     flHeight = round_to_n_decimals(self.sliderHeight.value, 2);
-    self.labelHeight.text = [NSString stringWithFormat:@"Height: %.2f", flHeight];
+    self.labelHeight.text = [NSString stringWithFormat:@"Height (%s): %.2f", UNIT_HEIGHT_LABEL[unit_system], flHeight];
     [self updateBMI];
 }
 
 - (IBAction)weightChanged:(id)sender
 {
     flWeight = round_to_n_decimals(self.sliderWeight.value, 1);
-    self.labelWeight.text = [NSString stringWithFormat:@"Weight: %.1f", flWeight];
+    self.labelWeight.text = [NSString stringWithFormat:@"Weight (%s): %.1f", UNIT_WEIGHT_LABEL[unit_system], flWeight];
     [self updateBMI];
 }
 
 - (void)updateBMI
 {
-    NSLog(@"unit_system = %d", unit_system);
     flBMI = [SIViewController calculateBMI :unit_system :flHeight :flWeight];
     self.labelBMI.text = [NSString stringWithFormat:@"BMI: %.2f", flBMI];
-    NSLog(@"flBMI = %.2f", flBMI);
 }
 
 + (float)calculateBMI :(enum unit_system_t)unit_system :(float)flHeight :(float)flWeight

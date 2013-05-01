@@ -82,7 +82,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<float key="IBUIValue">0.5</float>
+						<float key="IBUIMaxValue">0.0</float>
 					</object>
 					<object class="IBUISlider" id="11165078">
 						<reference key="NSNextResponder" ref="774585933"/>
@@ -96,7 +96,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<float key="IBUIValue">0.5</float>
+						<float key="IBUIMaxValue">0.0</float>
 					</object>
 					<object class="IBUILabel" id="712176754">
 						<reference key="NSNextResponder" ref="774585933"/>
