@@ -18,6 +18,7 @@
 		1D4EA9F8172E9C6200ADE568 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D4EA9F7172E9C6200ADE568 /* Default-568h@2x.png */; };
 		1D4EA9FB172E9C6200ADE568 /* SIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D4EA9FA172E9C6200ADE568 /* SIViewController.m */; };
 		1D4EA9FE172E9C6200ADE568 /* SIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D4EA9FC172E9C6200ADE568 /* SIViewController.xib */; };
+		1D792C0D1731C7220086DB4B /* utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 1D792C0C1731C7220086DB4B /* utils.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,8 @@
 		1D4EA9F9172E9C6200ADE568 /* SIViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SIViewController.h; sourceTree = "<group>"; };
 		1D4EA9FA172E9C6200ADE568 /* SIViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SIViewController.m; sourceTree = "<group>"; };
 		1D4EA9FD172E9C6200ADE568 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SIViewController.xib; sourceTree = "<group>"; };
+		1D792C0B1731C7170086DB4B /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
+		1D792C0C1731C7220086DB4B /* utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = utils.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +59,7 @@
 		1D4EA9D5172E9C6200ADE568 = {
 			isa = PBXGroup;
 			children = (
-				1D4EA9E7172E9C6200ADE568 /* NewBMICalculator */,
+				1D4EA9E7172E9C6200ADE568 /* BMICalculator */,
 				1D4EA9E0172E9C6200ADE568 /* Frameworks */,
 				1D4EA9DF172E9C6200ADE568 /* Products */,
 			);
@@ -80,9 +83,11 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		1D4EA9E7172E9C6200ADE568 /* NewBMICalculator */ = {
+		1D4EA9E7172E9C6200ADE568 /* BMICalculator */ = {
 			isa = PBXGroup;
 			children = (
+				1D792C0B1731C7170086DB4B /* utils.h */,
+				1D792C0C1731C7220086DB4B /* utils.c */,
 				1D4EA9F0172E9C6200ADE568 /* SIAppDelegate.h */,
 				1D4EA9F1172E9C6200ADE568 /* SIAppDelegate.m */,
 				1D4EA9F9172E9C6200ADE568 /* SIViewController.h */,
@@ -90,6 +95,7 @@
 				1D4EA9FC172E9C6200ADE568 /* SIViewController.xib */,
 				1D4EA9E8172E9C6200ADE568 /* Supporting Files */,
 			);
+			name = BMICalculator;
 			path = NewBMICalculator;
 			sourceTree = "<group>";
 		};
@@ -177,6 +183,7 @@
 				1D4EA9EE172E9C6200ADE568 /* main.m in Sources */,
 				1D4EA9F2172E9C6200ADE568 /* SIAppDelegate.m in Sources */,
 				1D4EA9FB172E9C6200ADE568 /* SIViewController.m in Sources */,
+				1D792C0D1731C7220086DB4B /* utils.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

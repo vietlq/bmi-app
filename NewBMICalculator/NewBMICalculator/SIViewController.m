@@ -7,27 +7,39 @@
 //
 
 #import "SIViewController.h"
-#import <math.h>
+#import "utils.h"
 
 @interface SIViewController ()
 
 @end
 
-// http://stackoverflow.com/questions/5678562/objective-c-rounding-float-to-the-nearest-05
-float round_to_first_decimal(float value);
-float round_to_second_decimal(float value);
+// Boundaries for height slider
+const static float MIN_HEIGHT_VALUE[] = {50, 20};
+const static float MAX_HEIGHT_VALUE[] = {300, 120};
+// Boundaries for weight slider
+const static float MIN_WEIGHT_VALUE[] = {2, 4};
+const static float MAX_WEIGHT_VALUE[] = {300, 600};
 
 @implementation SIViewController
 {
     float flHeight;
     float flWeight;
     float flBMI;
+    enum unit_system_t unit_system;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    // Set up the height slider
+    self.sliderHeight.minimumValue = MIN_HEIGHT_VALUE[unit_system];
+    self.sliderHeight.maximumValue = MAX_HEIGHT_VALUE[unit_system];
+    self.sliderHeight.value = 160;
+    // Set up the weight slider
+    self.sliderWeight.minimumValue = MIN_WEIGHT_VALUE[unit_system];
+    self.sliderWeight.maximumValue = MAX_WEIGHT_VALUE[unit_system];
+    self.sliderWeight.value = 50;
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,20 +55,19 @@ float round_to_second_decimal(float value);
 
 - (IBAction)heightChanged:(id)sender
 {
-    flHeight = round_to_first_decimal(self.sliderHeight.value);
-    NSLog(@"flHeight = %.1f", flHeight);
+    flHeight = round_to_n_decimals(self.sliderHeight.value, 2);
+    NSLog(@"flHeight = %.2f", flHeight);
     self.labelHeight.text = [NSString stringWithFormat:@"Height: %.2f", flHeight];
     [self updateBMI];
 }
 
 - (IBAction)weightChanged:(id)sender
 {
-    flWeight = round_to_first_decimal(self.sliderWeight.value);
+    flWeight = round_to_n_decimals(self.sliderWeight.value, 1);
     NSLog(@"flWeight = %.1f", flWeight);
-    self.labelWeight.text = [NSString stringWithFormat:@"Weight: %.2f", flWeight];
+    self.labelWeight.text = [NSString stringWithFormat:@"Weight: %.1f", flWeight];
     [self updateBMI];
 }
-
 
 - (void)updateBMI
 {
@@ -66,25 +77,16 @@ float round_to_second_decimal(float value);
 
 + (float)calculateBMI :(float)flHeight :(float)flWeight
 {
+    /*
+     English BMI Formula
+     BMI = ( Weight in Pounds / ( Height in inches x Height in inches ) ) x 703
+     Metric BMI Formula
+     BMI = ( Weight in Kilograms / ( Height in Meters x Height in Meters ) )
+     */
+    
     float flBMI = 0;
-    
-    flBMI = flHeight*flWeight;
-    
+    flBMI = round_to_n_decimals(flHeight*flWeight, 2);
     return flBMI;
 }
 
 @end
-
-float round_to_first_decimal(float value)
-{
-    const float roundingValue = 0.1;
-    int mulitpler = floor(value / roundingValue);
-    return mulitpler * roundingValue;
-}
-
-float round_to_second_decimal(float value)
-{
-    const float roundingValue = 0.01;
-    int mulitpler = floor(value / roundingValue);
-    return mulitpler * roundingValue;
-}
