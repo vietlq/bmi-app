@@ -49,7 +49,6 @@ const static char* UNIT_WEIGHT_LABEL[] = {"kg", "lb"};
     self.sliderHeight.maximumValue = MAX_HEIGHT_VALUE[unit_system];
     self.sliderHeight.value = 1.6;
     flHeight = self.sliderHeight.value;
-    NSLog(@"self.sliderHeight.value = %.6f", self.sliderHeight.value);
     
     // Set up the weight slider
     self.sliderWeight.minimumValue = MIN_WEIGHT_VALUE[unit_system];
