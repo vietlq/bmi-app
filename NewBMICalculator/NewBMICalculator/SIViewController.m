@@ -77,30 +77,40 @@ const static char* UNIT_WEIGHT_LABEL[] = {"kg", "lb"};
     self.sliderHeight.minimumValue = MIN_HEIGHT_VALUE[unit_system];
     self.sliderHeight.maximumValue = MAX_HEIGHT_VALUE[unit_system];
     self.sliderHeight.value = old_height*HEIGHT_RATIO_TABLE[unit_system]/HEIGHT_RATIO_TABLE[old_unit_system];
-    [self heightChanged:self];
+    [self updateHeight];
     
     // Set up the weight slider
     const float old_weight = self.sliderWeight.value;
     self.sliderWeight.minimumValue = MIN_WEIGHT_VALUE[unit_system];
     self.sliderWeight.maximumValue = MAX_WEIGHT_VALUE[unit_system];
     self.sliderWeight.value = old_weight*WEIGHT_RATIO_TABLE[unit_system]/WEIGHT_RATIO_TABLE[old_unit_system];
-    [self weightChanged:self];
+    [self updateWeight];
     
     // Init BMI
     [self updateBMI];
 }
 
-- (IBAction)heightChanged:(id)sender
+- (void)updateHeight
 {
     flHeight = round_to_n_decimals(self.sliderHeight.value, 2);
-    self.labelHeight.text = [NSString stringWithFormat:@"Height (%s): %.2f", UNIT_HEIGHT_LABEL[unit_system], flHeight];
+    self.labelHeight.text = [NSString stringWithFormat:@"Height (%s): %.2f", UNIT_HEIGHT_LABEL[unit_system], flHeight];   
+}
+
+- (IBAction)heightChanged:(id)sender
+{
+    [self updateHeight];
     [self updateBMI];
+}
+
+- (void)updateWeight
+{
+    flWeight = round_to_n_decimals(self.sliderWeight.value, 1);
+    self.labelWeight.text = [NSString stringWithFormat:@"Weight (%s): %.1f", UNIT_WEIGHT_LABEL[unit_system], flWeight];   
 }
 
 - (IBAction)weightChanged:(id)sender
 {
-    flWeight = round_to_n_decimals(self.sliderWeight.value, 1);
-    self.labelWeight.text = [NSString stringWithFormat:@"Weight (%s): %.1f", UNIT_WEIGHT_LABEL[unit_system], flWeight];
+    [self updateWeight];
     [self updateBMI];
 }
 
